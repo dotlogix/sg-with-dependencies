@@ -1,5 +1,5 @@
 ﻿Console.WriteLine("Hello, World!");
 
-// Console.WriteLine(LibNamespace.LibClass.SerializedContent);
-// Console.WriteLine(NugetNamespace.NugetClass.SerializedContent);
+Console.WriteLine(LibNamespace.LibClass.LibContent);
+Console.WriteLine(NugetNamespace.NugetClass.NugetContent);
 

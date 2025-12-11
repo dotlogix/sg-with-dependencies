@@ -6,25 +6,23 @@ using Newtonsoft.Json;
 namespace SampleGenerator1;
 
 [Generator]
-public class NugetUsingGenerator : ISourceGenerator
+public class NugetUsingGenerator : IIncrementalGenerator
 {
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-    }
-
-    public void Execute(GeneratorExecutionContext context)
-    {
-        var serializedContent = JsonConvert.SerializeObject(new { a = "a", b = 4 });
-
-        context.AddSource("NugetGenerator.Source.g.cs", SourceText.From(
-            $$""""
-              namespace NugetNamespace
-              {
-                  public class NugetClass
+        context.RegisterPostInitializationOutput(static context =>
+        {
+            var serializedContent = JsonConvert.SerializeObject(new { a = "a", b = 4 });
+            context.AddSource("NugetGenerator.Source.g.cs", SourceText.From(
+                $$""""
+                  namespace NugetNamespace
                   {
-                      public const string NugetContent = """{{serializedContent}}""";
+                      public class NugetClass
+                      {
+                          public const string NugetContent = """{{serializedContent}}""";
+                      }
                   }
-              }
-              """", Encoding.UTF8));
+                  """", Encoding.UTF8));
+        });
     }
 }

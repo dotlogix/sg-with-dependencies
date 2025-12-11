@@ -6,23 +6,22 @@ using SharedLib;
 namespace SampleGenerator2;
 
 [Generator]
-public class LibUsingGenerator : ISourceGenerator
+public class NugetUsingGenerator : IIncrementalGenerator
 {
-    public void Initialize(GeneratorInitializationContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-    }
-
-    public void Execute(GeneratorExecutionContext context)
-    {
-        context.AddSource("LibGenerator.Source.g.cs", SourceText.From(
-            $$"""
-              namespace LibNamespace
-              {
-                  public class LibClass
+        context.RegisterPostInitializationOutput(static context =>
+        {
+            context.AddSource("LibGenerator.Source.g.cs", SourceText.From(
+                $$"""
+                  namespace LibNamespace
                   {
-                      public const string LibContent = "{{LibConstants.SourceName}}";
+                      public class LibClass
+                      {
+                          public const string LibContent = "{{LibConstants.SourceName}}";
+                      }
                   }
-              }
-              """, Encoding.UTF8));
+                  """, Encoding.UTF8));
+        });
     }
 }
